@@ -1,0 +1,88 @@
+<form
+  [formGroup]="profileForm"
+  #aadharForm="ngForm"
+  (ngSubmit)="onSubmit(aadharForm.value)"
+>
+  <label for="first-name">First Name: </label>
+  <input
+    id="first-name"
+    type="text"
+    [value]="profileForm.get('firstName')?.value | titleCaseSusmit"
+    formControlName="firstName"
+    required
+  />
+  <div
+    *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)"
+    class="alert alert-danger"
+  >
+    <div *ngIf="firstName.errors?.['required']">Name is required.</div>
+    <div *ngIf="firstName.errors?.['minlength']">
+      Name must be at least 4 characters long.
+    </div>
+    <div *ngIf="firstName.errors?.['forbiddenName']">Name cannot be Bob.</div>
+  </div>
+  <label for="middle-name">Middle Name: </label>
+  <input id="middle-name" type="text" formControlName="middleName" />
+  <label for="last-name">Last Name: </label>
+  <input
+    id="last-name"
+    type="text"
+    formControlName="lastName"
+    [value]="profileForm.get('lastName')?.value | titlecase"
+  />
+  <label for="email">Email </label>
+  <input id="email" type="email" formControlName="email" />
+  <label for="mobileNumber">Mobile Number: </label>
+  <input
+    id="mobileNumber"
+    type="text"
+    formControlName="mobileNumber"
+    required
+  />
+  <div
+    *ngIf="mobileNumber.invalid && (mobileNumber.dirty || mobileNumber.touched)"
+    class="alert alert-danger"
+  >
+    <div *ngIf="mobileNumber.errors?.['required']">Mobile is required.</div>
+    <div *ngIf="mobileNumber.errors?.['minlength']">
+      Name must be at least 10 characters long.
+    </div>
+    <div *ngIf="mobileNumber.errors?.['pattern']">Must be a number</div>
+  </div>
+  <label for="telephone">Telephone: </label>
+  <input id="telephone" type="number" formControlName="telephoneNumber" />
+  <label for="dob">Date Of Birth: </label>
+  <input id="dob" type="text" formControlName="dob" />
+  <label for="dobProof">Date Of Birth Proof: </label>
+  <input id="dobProof" type="text" formControlName="dobProof" />
+  <label for="father-name">Father's Name: </label>
+  <input id="father-name" type="text" formControlName="fatherName" />
+  <div formGroupName="address">
+    <h2>Address</h2>
+    <label for="house">House Number: </label>
+    <input id="house" type="text" formControlName="houseNumber" />
+    <label for="street">Street: </label>
+    <input id="street" type="text" formControlName="street" />
+
+    <label for="city">City: </label>
+    <input id="city" type="text" formControlName="city" />
+
+    <label for="state">State: </label>
+    <input id="state" type="text" formControlName="state" />
+
+    <label for="zip">Zip Code: </label>
+    <input id="zip" type="text" formControlName="zip" />
+  </div>
+
+  <p>Complete the form to enable button.</p>
+  <button type="submit" [disabled]="!profileForm.valid">Submit</button>
+</form>
+
+<hr />
+
+<p>Form Value: {{ profileForm.value | json }}</p>
+
+<p>Form Status: {{ profileForm.status }}</p>
+
+<button type="button" (click)="updateProfile()">Update Profile</button>
+<button type="button" (click)="clearProfile()">Clear Profile</button>

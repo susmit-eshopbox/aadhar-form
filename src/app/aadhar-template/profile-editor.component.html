@@ -1,0 +1,135 @@
+<form #aadharForm="ngForm" (ngSubmit)="onSubmit(aadharForm)">
+  <label for="first-name">First Name: </label>
+  <input
+    id="first-name"
+    type="text"
+    name="firstName"
+    required
+    [(ngModel)]="profileForm.firstName"
+    #firstName="ngModel"
+    minlength="4"
+    appForbiddenName="bob"
+  />
+  <div
+    *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)"
+    class="alert alert-danger"
+  >
+    <div *ngIf="firstName.errors?.['required']">Name is required.</div>
+    <div *ngIf="firstName.errors?.['minlength']">
+      Name must be at least 4 characters long.
+    </div>
+    <div *ngIf="firstName.errors?.['forbiddenName']">Name cannot be Bob.</div>
+  </div>
+  <label for="middle-name">Middle Name: </label>
+  <input
+    id="middle-name"
+    type="text"
+    name="middleName"
+    #middleName="ngModel"
+    [(ngModel)]="profileForm.middleName"
+  />
+  <label for="last-name">Last Name: </label>
+  <input
+    id="last-name"
+    type="text"
+    name="lastName"
+    #lastName="ngModel"
+    [(ngModel)]="profileForm.lastName"
+  />
+  <label for="email">Email </label>
+  <input
+    id="email"
+    type="email"
+    name="email"
+    #email="ngModel"
+    [(ngModel)]="profileForm.email"
+  />
+  <label for="mobileNumber">Mobile Number: </label>
+  <input
+    id="mobileNumber"
+    type="text"
+    required
+    name="mobileNumber"
+    [(ngModel)]="profileForm.mobileNumber"
+    #mobileNumber="ngModel"
+    minlength="10"
+    pattern="[0-9.]+"
+  />
+  <div
+    *ngIf="mobileNumber.invalid && (mobileNumber.dirty || mobileNumber.touched)"
+    class="alert alert-danger"
+  >
+    <div *ngIf="mobileNumber.errors?.['required']">Mobile is required.</div>
+    <div *ngIf="mobileNumber.errors?.['minlength']">
+      Name must be at least 10 characters long.
+    </div>
+    <div *ngIf="mobileNumber.errors?.['pattern']">Must be a number</div>
+  </div>
+  <label for="telephone">Telephone: </label>
+  <input
+    id="telephone"
+    type="number"
+    name="telephoneNumber"
+    #telephoneNumber="ngModel"
+    [(ngModel)]="profileForm.telephoneNumber"
+  />
+  <label for="dob">Date Of Birth: </label>
+  <input id="dob" type="text" name="dob" [(ngModel)]="profileForm.dob" />
+  <label for="dobProof">Date Of Birth Proof: </label>
+  <input
+    id="dobProof"
+    type="text"
+    name="dobProof"
+    [(ngModel)]="profileForm.dobProof"
+  />
+  <label for="father-name">Father's Name: </label>
+  <input
+    id="father-name"
+    type="text"
+    name="fatherName"
+    [(ngModel)]="profileForm.fatherName"
+  />
+  <div>
+    <h2>Address</h2>
+    <label for="house">House Number: </label>
+    <input
+      id="house"
+      type="text"
+      name="house"
+      [(ngModel)]="profileForm.houseNumber"
+    />
+    <label for="street">Street: </label>
+    <input
+      id="street"
+      type="text"
+      name="street"
+      [(ngModel)]="profileForm.street"
+    />
+
+    <label for="city">City: </label>
+    <input id="city" type="text" name="city" [(ngModel)]="profileForm.city" />
+
+    <label for="state">State: </label>
+    <input
+      id="state"
+      type="text"
+      name="state"
+      [(ngModel)]="profileForm.state"
+    />
+
+    <label for="zip">Zip Code: </label>
+    <input id="zip" type="text" name="zip" [(ngModel)]="profileForm.zip" />
+  </div>
+
+  <p>Complete the form to enable button.</p>
+  <button type="submit" [disabled]="!aadharForm.valid">Submit</button>
+</form>
+
+<hr />
+
+<p>Form Value: {{ aadharForm.value | json }}</p>
+
+<p>Form Status: {{ aadharForm.status }}</p>
+
+<button type="button">Update Profile</button>
+<button type="button">Clear Profile</button>
