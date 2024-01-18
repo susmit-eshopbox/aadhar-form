@@ -3,12 +3,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AadharInfo } from './aadhar.model';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
+
 @Injectable({
   providedIn: 'root',
 })
 export class DataService {
   constructor(private http: HttpClient) {}
-  private dataUrl = '/api/data'; // URL to web api
+  private dataUrl = 'assets/db.json'; // URL to web api src\app\api\db.json
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
   };

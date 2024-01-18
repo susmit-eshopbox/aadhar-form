@@ -1,10 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroupDirective,
-  FormRecord,
-  NgForm,
-} from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { FormArray } from '@angular/forms';
 import { AadharInfo } from '../aadhar.model';
@@ -12,7 +7,6 @@ import { DataService } from '../data.service';
 import { forbiddenNameValidator } from '../shared/forbidden-name.directive';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-aadhar-reactive',
@@ -54,7 +48,7 @@ export class AddharReactiveComponent implements OnInit {
       zip: [''],
     }),
   });
-
+  url = 'assets/db.json';
   constructor(
     private fb: FormBuilder,
     private dataService: DataService,
@@ -70,28 +64,48 @@ export class AddharReactiveComponent implements OnInit {
   }
 
   getUser(): void {
+    let a: any = localStorage.getItem('data');
+    let data = JSON.parse(a);
+    console.log(data);
     const id = parseInt(this.route.snapshot.paramMap.get('id')!);
-    this.dataService.getUser(id).subscribe((hero: any) => {
-      console.log(hero);
-
-      this.profileForm.setValue({
-        firstName: hero.firstName,
-        middleName: hero.middleName,
-        lastName: hero.lastName,
-        email: hero.email,
-        mobileNumber: hero.mobileNumber,
-        telephoneNumber: hero.telephoneNumber,
-        dob: hero.dob,
-        dobProof: hero.dobProof,
-        fatherName: hero.fatherName,
-        address: {
-          houseNumber: hero.address.houseNumber,
-          street: hero.address.street,
-          city: hero.address.city,
-          state: hero.address.state,
-          zip: hero.address.zip,
-        },
-      });
+    let hero = data.find((d: any) => d.id === id);
+    // this.dataService.getUser(id).subscribe((hero: any) => {
+    //   this.profileForm.setValue({
+    //     firstName: hero.firstName,
+    //     middleName: hero.middleName,
+    //     lastName: hero.lastName,
+    //     email: hero.email,
+    //     mobileNumber: hero.mobileNumber,
+    //     telephoneNumber: hero.telephoneNumber,
+    //     dob: hero.dob,
+    //     dobProof: hero.dobProof,
+    //     fatherName: hero.fatherName,
+    //     address: {
+    //       houseNumber: hero.address.houseNumber,
+    //       street: hero.address.street,
+    //       city: hero.address.city,
+    //       state: hero.address.state,
+    //       zip: hero.address.zip,
+    //     },
+    //   });
+    // });
+    this.profileForm.setValue({
+      firstName: hero.firstName,
+      middleName: hero.middleName,
+      lastName: hero.lastName,
+      email: hero.email,
+      mobileNumber: hero.mobileNumber,
+      telephoneNumber: hero.telephoneNumber,
+      dob: hero.dob,
+      dobProof: hero.dobProof,
+      fatherName: hero.fatherName,
+      address: {
+        houseNumber: hero.address.houseNumber,
+        street: hero.address.street,
+        city: hero.address.city,
+        state: hero.address.state,
+        zip: hero.address.zip,
+      },
     });
   }
 
@@ -132,15 +146,29 @@ export class AddharReactiveComponent implements OnInit {
   }
   onSubmit(form: AadharInfo) {
     console.warn(form);
+    let a: any = localStorage.getItem('data');
+    let data = JSON.parse(a);
+    console.log(data);
     const id = parseInt(this.route.snapshot.paramMap.get('id')!);
     if (parseInt(this.route.snapshot.paramMap.get('id')!)) {
-      this.dataService
-        .updateUser(form, id)
-        .subscribe((_) => this.router.navigate(['/']));
+      // this.dataService
+      //   .updateUser(form, id)
+      //   .subscribe((_) => this.router.navigate(['/']));
+      let newdata = [...a].map((obj) => (obj.id === id ? form : obj));
+      localStorage.setItem('data', JSON.stringify(newdata));
     } else {
-      this.dataService
-        .addUser(form)
-        .subscribe((_) => this.router.navigate(['/', 'users']));
+      let newData;
+      // this.dataService
+      //   .addUser(form)
+      //   .subscribe((_) => this.router.navigate(['/', 'users']));
+      if (data === '') {
+        newData = [form];
+        console.log(newData);
+      } else {
+        newData = [...data, form];
+      }
+
+      localStorage.setItem('data', JSON.stringify(newData));
       this.clearProfile();
     }
   }

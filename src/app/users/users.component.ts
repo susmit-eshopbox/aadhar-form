@@ -17,7 +17,10 @@ export class UsersComponent {
   }
 
   getUsers(): void {
-    this.dataService.getUsers().subscribe((users) => (this.users = users));
+    // this.dataService.getUsers().subscribe((users) => (this.users = users));
+    let a: any = localStorage.getItem('data');
+    let data = JSON.parse(a);
+    this.users = data;
   }
 
   // add(name: string): void {
@@ -32,6 +35,7 @@ export class UsersComponent {
 
   delete(user: AadharInfo): void {
     this.users = this.users.filter((h) => h !== user);
-    this.dataService.deleteUser(user.id).subscribe();
+    //this.dataService.deleteUser(user.id).subscribe();
+    localStorage.setItem('data', JSON.stringify(this.users));
   }
 }

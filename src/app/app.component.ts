@@ -58,6 +58,7 @@ export class AppComponent implements OnInit {
   //   this.editor = type;
   // }
   ngOnInit(): void {
+    localStorage.setItem('data', JSON.stringify(''));
     // Create a new Observable
     const sqnc = new Observable(countOnetoTen);
 
